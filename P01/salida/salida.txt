@@ -1,0 +1,9 @@
+Testing word: aaabbb
+aaabbb --- Accepted
+
+Testing word: aabb
+aabb --- Accepted
+
+Testing word: abb
+abb --- Rejected
+
