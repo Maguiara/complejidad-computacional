@@ -30,8 +30,8 @@ El proyecto acepta las siguientes flags:
 
 - **-config** <ruta archivo configuración> (obligatorio): Ruta al archivo .txt con la definicion formal del autómata
 - **-trace** <y|n>: Muestra una tabla detallada paso a paso con la cofiguración del autómata y todas las trancisiones aplicadas para aceptar o rechazar una palabra
-- **-in** \<ruta> Lee las cadenas a evaluar desde un archivo de entrada en vez de por teclado.
-- **-out** \<ruta> Escribe los resultados y la traza en el archivo especificado en vez de por pantalla.
+- **-in** \<ruta> Lee las cadenas a evaluar desde un archivo de entrada en vez de por teclado. Si este no existe, salta un error.
+- **-out** \<ruta> Escribe los resultados y la traza en el archivo especificado en vez de por pantalla. Si este no existe, crea uno en la ruta/archivo especificada.
 
 ### *Estructuras usadas*
 

@@ -48,20 +48,20 @@ ApfSimulator::ApfSimulator(StateSet states, Alphabet input_alphabet,
  * @param trace_mode Si es true, se muestra el proceso de simulación.
  * @return true si la cadena es aceptada, false en caso contrario.
  */
-bool ApfSimulator::IsAccepted(const std::string& input_string, bool trace_mode) const {
+bool ApfSimulator::IsAccepted(const std::string& input_string, bool trace_mode, std::ostream& output) const {
   if (trace_mode) {
-    std::cout << std::left 
+    output << std::left 
               << std::setw(6)  << "Paso" 
               << "| " << std::setw(8)  << "Estado" 
               << "| " << std::setw(10) << "Cadena" 
               << "| " << std::setw(10) << "Pila" 
               << "| Transiciones aplicables\n";
-    std::cout << std::string(80, '-') << "\n";
+    output << std::string(80, '-') << "\n";
   }
 
   AutomatonStack initial_stack(initial_stack_symbol_);
   Configuration initial_config(initial_state_, input_string, std::move(initial_stack));
-  return ExplorePaths(initial_config, trace_mode, 1);
+  return ExplorePaths(initial_config, trace_mode, 1, output);
 }
 
 /**
@@ -71,7 +71,7 @@ bool ApfSimulator::IsAccepted(const std::string& input_string, bool trace_mode) 
  * @param step Número de paso actual en la simulación.
  * @return true si se encuentra un camino que lleva a un estado final, false en caso
  */
-bool ApfSimulator::ExplorePaths(const Configuration& current_config, bool trace_mode, int step) const {
+bool ApfSimulator::ExplorePaths(const Configuration& current_config, bool trace_mode, int step, std::ostream& output) const {
   char stack_top = Alphabet::EPSILON;
   bool stack_empty = false;
   
@@ -100,7 +100,7 @@ bool ApfSimulator::ExplorePaths(const Configuration& current_config, bool trace_
       }
     }
 
-    std::cout << std::left << std::setw(6)  << step << "| " << std::setw(8)  << current_state << "| " << std::setw(10) << display_input 
+    output << std::left << std::setw(6)  << step << "| " << std::setw(8)  << current_state << "| " << std::setw(10) << display_input 
               << "| " << std::setw(10) << current_config.GetStackContent().ToString() << "| " << applicable_trans << "\n";
   }
 
@@ -110,7 +110,7 @@ bool ApfSimulator::ExplorePaths(const Configuration& current_config, bool trace_
   for (const auto& transition : transitions_) {
     if (transition.IsApplicable(current_state, Alphabet::EPSILON, stack_top)) {
       Configuration next_config = current_config.ApplyTransition(transition);
-      if (ExplorePaths(next_config, trace_mode, step + 1)) {
+      if (ExplorePaths(next_config, trace_mode, step + 1, output)) {
         return true;
       }
     }
@@ -121,7 +121,7 @@ bool ApfSimulator::ExplorePaths(const Configuration& current_config, bool trace_
     for (const auto& transition : transitions_) {
       if (transition.IsApplicable(current_state, current_input_symbol, stack_top)) {
         Configuration next_config = current_config.ApplyTransition(transition);
-        if (ExplorePaths(next_config, trace_mode, step + 1)) {
+        if (ExplorePaths(next_config, trace_mode, step + 1, output)) {
           return true;
         }
       }

@@ -1,9 +1,33 @@
-Testing word: aaabbb
-aaabbb --- Accepted
+Comprobando: aaabbb
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | q1      | aaabbb    | S         | d(q1,a,S)->(q1,AS)  
+2     | q1      | aabbb     | SA        | d(q1,a,A)->(q1,AA)  
+3     | q1      | abbb      | SAA       | d(q1,a,A)->(q1,AA)  
+4     | q1      | bbb       | SAAA      | d(q1,b,A)->(q2,.)  
+5     | q2      | bb        | SAA       | d(q2,b,A)->(q2,.)  
+6     | q2      | b         | SA        | d(q2,b,A)->(q2,.)  
+7     | q2      | .         | S         | d(q2,.,S)->(q3,S)  
+8     | q3      | .         | S         | 
+aaabbb --- Aceptado
 
-Testing word: aabb
-aabb --- Accepted
+Comprobando: aabb
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | q1      | aabb      | S         | d(q1,a,S)->(q1,AS)  
+2     | q1      | abb       | SA        | d(q1,a,A)->(q1,AA)  
+3     | q1      | bb        | SAA       | d(q1,b,A)->(q2,.)  
+4     | q2      | b         | SA        | d(q2,b,A)->(q2,.)  
+5     | q2      | .         | S         | d(q2,.,S)->(q3,S)  
+6     | q3      | .         | S         | 
+aabb --- Aceptado
 
-Testing word: abb
-abb --- Rejected
+Comprobando: abb
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | q1      | abb       | S         | d(q1,a,S)->(q1,AS)  
+2     | q1      | bb        | SA        | d(q1,b,A)->(q2,.)  
+3     | q2      | b         | S         | d(q2,.,S)->(q3,S)  
+4     | q3      | b         | S         | 
+abb --- Rechazado
 

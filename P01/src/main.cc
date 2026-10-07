@@ -42,9 +42,9 @@ int main(int argc, char* argv[]) {
     std::ofstream file_out;
     if (!options.output_file.empty()) {
       file_out.open(options.output_file);
-      if (!file_out.is_open()) {
-        throw std::runtime_error("Cannot open output file: " + options.output_file);
-      }
+      // if (!file_out.is_open()) {
+      //   throw std::runtime_error("Cannot open output file: " + options.output_file);
+      // }
       output_stream = &file_out;
     }
 
@@ -52,12 +52,12 @@ int main(int argc, char* argv[]) {
     std::string word;
     while (*input_stream >> word) { 
       if (options.trace_mode) {
-        *output_stream << "Testing word: " << word << "\n";
+        *output_stream << "Comprobando: " << word << "\n";
       }
       
-      bool accepted = simulator.IsAccepted(word, options.trace_mode);
+      bool accepted = simulator.IsAccepted(word, options.trace_mode, *output_stream);
       
-      *output_stream << word << " --- " << (accepted ? "Accepted" : "Rejected") << "\n\n";
+      *output_stream << word << " --- " << (accepted ? "Aceptado" : "Rechazado") << "\n\n";
     }
 
   } catch (const std::exception& e) {

@@ -28,10 +28,10 @@ class ApfSimulator {
                char initial_stack_symbol, StateSet final_states,
                std::vector<Transition> transitions);
                
-  bool IsAccepted(const std::string& input_string, bool trace_mode) const;
+  bool IsAccepted(const std::string& input_string, bool trace_mode, std::ostream& output) const;
 
  private:
-  bool ExplorePaths(const Configuration& current_config, bool trace_mode, int step) const;
+  bool ExplorePaths(const Configuration& current_config, bool trace_mode, int step, std::ostream& output) const;
 
   StateSet states_;
   Alphabet input_alphabet_;
