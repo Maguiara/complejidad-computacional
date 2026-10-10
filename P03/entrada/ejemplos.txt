@@ -1,0 +1,6 @@
+# Parámetros de ejemplo para ejecutar desde P03 (una ejecución por línea).
+./bin/p03 -x 2 -y 3
+./bin/p03 -x 3 -y 2
+./bin/p03 -x 5 -y 0
+./bin/p03 -x 0 -y 3
+./bin/p03 -x 0 -y 0
