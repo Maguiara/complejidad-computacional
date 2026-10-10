@@ -1,0 +1,43 @@
+Comprobando: AABBCCCC
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | p       | AABBCCCC  | X         | d(p,A,X)->(p,yX)  
+2     | p       | ABBCCCC   | Xy        | d(p,A,y)->(p,yy)  
+3     | p       | BBCCCC    | Xyy       | d(p,B,y)->(q,yy)  
+4     | q       | BCCCC     | Xyyy      | d(q,B,y)->(q,yy)  
+5     | q       | CCCC      | Xyyyy     | d(q,C,y)->(r,.)  
+6     | r       | CCC       | Xyyy      | d(r,C,y)->(r,.)  
+7     | r       | CC        | Xyy       | d(r,C,y)->(r,.)  
+8     | r       | C         | Xy        | d(r,C,y)->(r,.)  
+9     | r       | .         | X         | d(r,.,X)->(s,X)  
+10    | s       | .         | X         | 
+AABBCCCC --- Aceptado
+
+Comprobando: AACC
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | p       | AACC      | X         | d(p,A,X)->(p,yX)  
+2     | p       | ACC       | Xy        | d(p,A,y)->(p,yy)  
+3     | p       | CC        | Xyy       | 
+AACC --- Rechazado
+
+Comprobando: BBCC
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | p       | BBCC      | X         | d(p,B,X)->(q,yX)  
+2     | q       | BCC       | Xy        | d(q,B,y)->(q,yy)  
+3     | q       | CC        | Xyy       | d(q,C,y)->(r,.)  
+4     | r       | C         | Xy        | d(r,C,y)->(r,.)  
+5     | r       | .         | X         | d(r,.,X)->(s,X)  
+6     | s       | .         | X         | 
+BBCC --- Aceptado
+
+Comprobando: ABC
+Paso  | Estado  | Cadena    | Pila      | Transiciones aplicables
+--------------------------------------------------------------------------------
+1     | p       | ABC       | X         | d(p,A,X)->(p,yX)  
+2     | p       | BC        | Xy        | d(p,B,y)->(q,yy)  
+3     | q       | C         | Xyy       | d(q,C,y)->(r,.)  
+4     | r       | .         | Xy        | 
+ABC --- Rechazado
+

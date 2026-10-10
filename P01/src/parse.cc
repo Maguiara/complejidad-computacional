@@ -47,8 +47,10 @@ void ApfParser::ValidateTransition(const std::string& source, char input,
                                    const StateSet& states, 
                                    const Alphabet& input_alph, 
                                    const Alphabet& stack_alph) {
-  if (!states.Contains(source) || !states.Contains(dest)) 
-    throw std::runtime_error("Transition states must be in the set of states (" + source + " or " + dest + " is not in " + states.ToString() + ")");
+  if (!states.Contains(source)) 
+    throw std::runtime_error("Transition states must be in the set of states (Source: " + source + " is not in " + states.ToString() + ")");
+  if (!states.Contains(dest)) 
+    throw std::runtime_error("Transition states must be in the set of states (Destination: " + dest + " is not in " + states.ToString() + ")");
   if (!input_alph.Contains(input) && input != Alphabet::EPSILON) 
     throw std::runtime_error("Input symbol must be in the input alphabet or epsilon (" + std::string(1, input) + " is not in  " + input_alph.ToString() + ")");
   if (!stack_alph.Contains(stack) && stack != Alphabet::EPSILON) 
