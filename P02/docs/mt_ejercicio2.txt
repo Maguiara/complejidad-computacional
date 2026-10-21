@@ -1,0 +1,25 @@
+# MT de tres cintas
+# Sustituye la cadena de a y b por 1^(numero de b) . 1^(numero de a)
+# Si un contador es cero se escribe 0
+# Transicion: estado leido1 leido2 leido3 destino escrito1 escrito2 escrito3 mov1 mov2 mov3
+q0 q1 q2 q3 q4 q5 q6
+a b
+a b 1 0 .
+q0
+.
+q6
+3
+q0 a . . q0 a . 1 R S R
+q0 b . . q0 b 1 . R R S
+q0 . . . q1 . . . L S S
+q1 a . . q1 . . . L S S
+q1 b . . q1 . . . L S S
+q1 . . . q2 . . . S S L
+q2 . . 1 q3 1 . 1 L S L
+q2 . . . q3 0 . . L S S
+q3 . . 1 q3 1 . 1 L S L
+q3 . . . q4 . . . L L S
+q4 . 1 . q5 1 1 . L L S
+q4 . . . q5 0 . . L S S
+q5 . 1 . q5 1 1 . L L S
+q5 . . . q6 . . . R S S
