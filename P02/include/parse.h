@@ -11,14 +11,17 @@
  *        de configuración de máquinas de Turing multicinta.
  */
 
-#ifndef PARSE_H_
-#define PARSE_H_
+#ifndef P02_INCLUDE_PARSE_H_
+#define P02_INCLUDE_PARSE_H_
 
 #include <cstddef>
 #include <fstream>
 #include <string>
 #include <vector>
 
+#include "alphabet.h"
+#include "state_set.h"
+#include "transition.h"
 #include "turing_machine.h"
 
 /**
@@ -30,105 +33,59 @@
  */
 class Parser {
  public:
-  /**
-   * @brief Lee un archivo y construye una máquina de Turing.
-   * @param filename Ruta del archivo de configuración.
-   * @return Máquina de Turing construida.
-   * @throws std::runtime_error Si el archivo no es válido.
-   */
   static TuringMachine Parse(const std::string& filename);
 
  private:
-  /**
-   * @brief Obtiene la siguiente línea válida del archivo.
-   * @param file Archivo de entrada.
-   * @param line Línea leída.
-   * @return true si existe una línea válida, false si termina el archivo.
-   */
-  static bool GetNextValidLine(std::ifstream& file, std::string& line);
+  bool GetNextValidLine(std::ifstream& file, std::string& line);
+  StateSet ReadStates(std::ifstream& file);
 
-  /**
-   * @brief Valida una transición de la máquina.
-   * @param transition Transición que se desea comprobar.
-   * @param states Conjunto de estados válidos.
-   * @param tape_alphabet Alfabeto de cinta.
-   * @param tape_count Número de cintas.
-   * @param transitions Transiciones leídas anteriormente.
-   * @throws std::runtime_error Si la transición no es válida.
-   */
-  static void ValidateTransition(
-      const Transition& transition,
-      const StateSet& states,
-      const Alphabet& tape_alphabet,
-      size_t tape_count,
-      const std::vector<Transition>& transitions);
-
-  /**
-   * @brief Lee el conjunto de estados.
-   * @param file Archivo de entrada.
-   * @return Conjunto de estados.
-   */
-  static StateSet ReadStates(std::ifstream& file);
-
-  /**
-   * @brief Lee un alfabeto del archivo.
-   * @param file Archivo de entrada.
-   * @param error_msg Mensaje de error si falta el alfabeto.
-   * @return Alfabeto leído.
-   */
-  static Alphabet ReadAlphabet(
+  Alphabet ReadAlphabet(
       std::ifstream& file, const std::string& error_msg);
 
-  /**
-   * @brief Lee y valida el estado inicial.
-   * @param file Archivo de entrada.
-   * @param states Conjunto de estados válidos.
-   * @return Estado inicial.
-   */
-  static std::string ReadInitialState(
+  std::string ReadInitialState(
       std::ifstream& file, const StateSet& states);
 
-  /**
-   * @brief Lee y valida el símbolo blanco.
-   * @param file Archivo de entrada.
-   * @param input_alphabet Alfabeto de entrada.
-   * @param tape_alphabet Alfabeto de cinta.
-   * @return Símbolo blanco.
-   */
-  static char ReadBlankSymbol(
+  char ReadBlankSymbol(
       std::ifstream& file,
       const Alphabet& input_alphabet,
       const Alphabet& tape_alphabet);
 
-  /**
-   * @brief Lee y valida los estados finales.
-   * @param file Archivo de entrada.
-   * @param states Conjunto de estados válidos.
-   * @return Conjunto de estados finales.
-   */
-  static StateSet ReadFinalStates(
+  StateSet ReadFinalStates(
       std::ifstream& file, const StateSet& states);
 
-  /**
-   * @brief Lee y valida el número de cintas.
-   * @param file Archivo de entrada.
-   * @return Número de cintas.
-   */
-  static size_t ReadTapeCount(std::ifstream& file);
+  size_t ReadTapeCount(std::ifstream& file);
 
-  /**
-   * @brief Lee y valida las transiciones.
-   * @param file Archivo de entrada.
-   * @param states Conjunto de estados válidos.
-   * @param tape_alphabet Alfabeto de cinta.
-   * @param tape_count Número de cintas.
-   * @return Vector de transiciones.
-   */
-  static std::vector<Transition> ReadTransitions(
+  std::vector<Transition> ReadTransitions(
       std::ifstream& file,
       const StateSet& states,
       const Alphabet& tape_alphabet,
       size_t tape_count);
+
+  TuringMachine ReadMachine(std::ifstream& file);
+  static void ValidateSymbol(const std::string& token);
+  static void ValidateAlphabetInclusion(const Alphabet& input_alphabet,
+                                       const Alphabet& tape_alphabet);
+  static void ValidateInitialState(const std::string& initial_state,
+                                   const StateSet& states);
+  static void ValidateBlankSymbol(char blank_symbol,
+                                  const Alphabet& input_alphabet,
+                                  const Alphabet& tape_alphabet);
+  static void ValidateFinalStates(const StateSet& final_states,
+                                  const StateSet& states);
+  static void ValidateTransitionFormat(
+      const std::vector<std::string>& tokens, size_t tape_count);
+  static void ValidateTransitionStates(const Transition& transition,
+                                       const StateSet& states);
+  static void ValidateTransitionSymbols(const std::vector<char>& symbols,
+                                        const Alphabet& tape_alphabet,
+                                        const std::string& operation);
+  static void ValidateTransitionMovements(const std::vector<char>& movements);
+  static void ValidateTransitionTapeCount(const Transition& transition,
+                                          size_t tape_count);
+  static void ValidateDeterminism(
+      const Transition& transition, const std::vector<Transition>& transitions);
+
+  std::size_t line_number_ = 0;
 };
 
-#endif  // PARSE_H_
+#endif  // P02_INCLUDE_PARSE_H_

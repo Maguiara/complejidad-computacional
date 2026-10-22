@@ -73,6 +73,31 @@ Los movimientos permitidos son `L` (izquierda), `R` (derecha) y `S` (sin desplaz
 q0 1 . q1 1 1 R R
 ```
 
+### *Validación de las configuraciones*
+
+`Parser` comprueba todos los campos de la definición y todas las líneas de
+transiciones antes de construir la máquina. Cada comprobación está separada en
+una función: inclusión del alfabeto de entrada en el de cinta, pertenencia del
+estado inicial y de todos los estados finales a los estados declarados, validez
+del blanco, símbolos de un carácter, número de cintas, formato de las
+transiciones, estados de origen y destino, símbolos de lectura y escritura,
+movimientos `L/R/S` y determinismo.
+
+La lectura se detiene en el primer error e indica el archivo, la línea física y
+el motivo. Los comentarios y las líneas vacías se ignoran como datos, pero se
+cuentan para localizar el error. Las transiciones se comprueban hasta el final
+del archivo, aunque no sean alcanzables durante una simulación.
+
+Para ejecutar las pruebas de validación desde `P02`:
+
+```bash
+python3 tests/test_parser.py
+```
+
+Se requiere Python 3 y `g++` con C++20. Las pruebas compilan el programa real en
+una carpeta temporal y verifican configuraciones válidas e inválidas mediante
+su interfaz de consola, sin sobrescribir el ejecutable de `bin/`.
+
 ### *Estructuras usadas*
 
 #### Componentes de la máquina
