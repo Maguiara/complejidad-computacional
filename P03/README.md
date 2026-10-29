@@ -2,35 +2,21 @@
 
 ## *Práctica 3: Funciones primitivas recursivas de números naturales*
 
-Este proyecto implementa un programa en C++ que calcula la función `potencia(x, y)` como una función primitiva recursiva de números naturales. La función se construye únicamente a partir de las funciones recursivas básicas y de las operaciones de composición y recursión primitiva, sin utilizar operadores aritméticos para el cálculo.
+Este proyecto implementa un programa en C++ que calcula la función `potencia(x, y)` como una función primitiva recursiva de números naturales. La función se construye únicamente a partir de las funciones recursivas básicas y de las operaciones de composición y recursión primitiva, sin utilizar `std::pow` ni los operadores de suma y multiplicación para calcular directamente las funciones derivadas.
 
 El programa recibe la base y el exponente como parámetros y muestra el resultado de la operación junto con el número de llamadas a funciones realizadas durante el cálculo.
-
-### *Criterio de conteo de llamadas*
-
-- **Una llamada por evaluación**: se cuenta una llamada cada vez que se evalúa una función, ya sea básica (`Z`, `S`, `P`), compuesta o definida por recursión primitiva.
-- **Pasos recursivos**: cada paso recursivo `f(x, y-1)` se contabiliza como una evaluación más de `f`.
-- **Proyecciones del esquema formal**: las proyecciones que intervienen en la composición de cada paso recursivo también se cuentan.
-
-El coste de cada función, con `a` y `b` los argumentos de `suma` y `producto`, es:
-
-- `suma(a, b)`: $2 + 4b$ llamadas.
-- `producto(a, b)`: $2 + b(6 + 4a)$ llamadas.
-- `potencia(x, y)`: $4 + y(6 + 6x) + 4(x + x^2 + \ldots + x^y)$ llamadas.
-
-Por ejemplo, para `2^3` se realizan $4 + 3 \cdot 18 + 4 \cdot (2 + 4 + 8) = 114$ llamadas.
 
 ### *Modo de uso*
 
 #### 1. Compilación
 
-El proyecto requiere `g++` con soporte para **C++17** y CMake 3.16 o superior. Desde la carpeta `practica3`, ejecute:
+El proyecto utiliza un Makefile para automatizar la compilación. Requiere `g++` con soporte para **C++20**, GNU Make y un entorno de shell compatible, como Linux, WSL o MSYS2. Desde la carpeta `P03`, ejecute:
 
 ```bash
 make
 ```
 
-Si desea borrar los archivos compilados, ejecute lo siguiente:
+Si desea borrar los archivos compilados, ejecute:
 
 ```bash
 make clean
@@ -41,7 +27,7 @@ make clean
 El proyecto acepta las siguientes flags:
 
 ```bash
-./build/potencia -x <natural> -y <natural>
+./bin/p03 -x <natural> -y <natural>
 ```
 
 - **-x** \<n> (obligatorio): Valor natural que será la base de la potencia.
@@ -49,7 +35,13 @@ El proyecto acepta las siguientes flags:
 
 Las dos opciones pueden indicarse en cualquier orden, pero no pueden repetirse. Cada valor debe estar formado únicamente por dígitos y caber en un `uint64_t`; en caso contrario, el programa muestra un error y termina con código `1`.
 
-Para cada ejecución, se muestra el resultado de la operación y el número de llamadas a funciones realizadas. Por ejemplo, para `2^3`, el programa muestra:
+Para cada ejecución, se muestra el resultado de la operación y el número de llamadas a funciones realizadas. Por ejemplo, al ejecutar:
+
+```bash
+./bin/p03 -x 2 -y 3
+```
+
+el programa muestra:
 
 ```text
 Resultado: 2^3 = 8
@@ -86,7 +78,21 @@ potencia(x, 0)   = S(Z(x))
 potencia(x, y+1) = producto(P_3^3(x, y, potencia(x, y)), P_1^3(x, y, potencia(x, y)))
 ```
 
-En cada paso recursivo, la función `h` es una composición de proyecciones con la función previamente definida, de modo que ninguna se calcula directamente con operadores del lenguaje.
+En cada paso recursivo, la función `h` es una composición de proyecciones con la función previamente definida, de modo que la suma, el producto y la potencia se evalúan mediante las funciones construidas. El sucesor utiliza `x + 1` y el control de la recursión reduce su parámetro mediante `y - 1`.
+
+### *Criterio de conteo de llamadas*
+
+- **Una llamada por evaluación**: se cuenta una llamada cada vez que se evalúa una función, ya sea básica (`Z`, `S`, `P`), compuesta o definida por recursión primitiva.
+- **Pasos recursivos**: cada paso recursivo `f(x, y-1)` se contabiliza como una evaluación más de `f`.
+- **Proyecciones del esquema formal**: las proyecciones que intervienen en la composición de cada paso recursivo también se cuentan.
+
+El coste de cada función, con `a` y `b` los argumentos de `suma` y `producto`, es:
+
+- `suma(a, b)`: $2 + 4b$ llamadas.
+- `producto(a, b)`: $2 + b(6 + 4a)$ llamadas.
+- `potencia(x, y)`: $4 + y(6 + 6x) + 4(x + x^2 + \ldots + x^y)$ llamadas.
+
+Por ejemplo, para `2^3` se realizan $4 + 3 \cdot 18 + 4 \cdot (2 + 4 + 8) = 114$ llamadas.
 
 ### *Validación de los parámetros*
 
@@ -96,12 +102,12 @@ La lectura se detiene en el primer error, que se muestra por la salida de error 
 
 ```text
 Error: El valor de -y debe ser un numero natural.
-Uso: ./build/potencia -x <natural> -y <natural>
+Uso: ./bin/p03 -x <natural> -y <natural>
 ```
 
 ### *Estructuras usadas*
 
-#### Componentes de las funciones
+#### Componentes del cálculo
 
 1. ***Function***
 
